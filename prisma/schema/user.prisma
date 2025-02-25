@@ -1,0 +1,46 @@
+model Position {
+  id String @id @default(cuid())
+
+  title       String
+  description String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users       User[]       @relation("UserPositions")
+  regulations Regulation[]
+}
+
+enum UserRole {
+  owner
+  ceo
+  director
+  groupLeader
+  member
+}
+
+model User {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  password String
+
+  photo          String
+  telegram       String
+  name           String
+  role           UserRole @default(member)
+  groupNumber    Int?     // 1 or 2 for group members and leaders
+  email1         String
+  email2         String
+  birthDate      DateTime
+  employmentDate DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  events    Event[]
+  posts     Post[]     @relation("PostAuthor")
+  likes     Like[]
+  comments  Comment[]
+  feedback  Feedback[]
+  positions Position[] @relation("UserPositions")
+}

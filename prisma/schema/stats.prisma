@@ -1,0 +1,14 @@
+model MonthlyStatistics {
+  id               Int      @id @default(autoincrement())
+  month            String // January, February, etc.
+  year             Int // To track different years
+  netIncome        Float
+  commissions      Float
+  numberOfOrders   Int
+  avgOrdersPerUser Float
+  avgTicketValue   Float
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([month, year])
+}

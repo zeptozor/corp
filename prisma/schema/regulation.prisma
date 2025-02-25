@@ -1,0 +1,29 @@
+model RegulationGroup {
+  id String @id @default(cuid())
+
+  name        String
+  description String?
+
+  parentId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  parent      RegulationGroup?  @relation("GroupHierarchy", fields: [parentId], references: [id])
+  children    RegulationGroup[] @relation("GroupHierarchy")
+  regulations Regulation[]
+}
+
+model Regulation {
+  id String @id @default(cuid())
+
+  title    String
+  content  String   @db.Text
+  keywords String[]
+  groupId  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  group     RegulationGroup @relation(fields: [groupId], references: [id])
+  positions Position[]
+}
