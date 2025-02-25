@@ -48,10 +48,12 @@ export default function AdminPage() {
   }, [])
 
   useEffect(() => {
-    if (status == 'authenticated' && session?.user?.role !== 'admin') router.push('/')
+    if (status === 'authenticated' && !['owner', 'ceo'].includes(session?.user?.role)) {
+      router.push('/')
+    }
   }, [session, router, status])
 
-  if (status == 'loading') {
+  if (status === 'loading') {
     return (
       <div className='flex justify-center items-center min-h-screen'>
         <div className='animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500' />
@@ -59,7 +61,7 @@ export default function AdminPage() {
     )
   }
 
-  if (status != 'authenticated' || session?.user?.role != 'admin') return null
+  if (status !== 'authenticated' || !['owner', 'ceo'].includes(session?.user?.role)) return null
 
   const onSubmit = async (data: NewUserForm) => {
     try {

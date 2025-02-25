@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
-export async function GET(request: Request, { params }: { params: { year: string } }) {
+export async function GET(request: Request, { params }: { params: any }) {
   try {
     const { year } = params
     const statistics = await prisma.monthlyStatistics.findMany({

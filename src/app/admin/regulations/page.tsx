@@ -28,7 +28,7 @@ export default function AdminRegulationsPage() {
   const { register, handleSubmit, reset } = useForm<RegulationForm>()
 
   useEffect(() => {
-    if (status === 'authenticated' && session?.user?.role !== 'admin') {
+    if (status === 'authenticated' && ['ceo', 'owner'].includes(session.user.role)) {
       router.push('/')
     }
     fetchRegulations()
@@ -112,7 +112,7 @@ export default function AdminRegulationsPage() {
     )
   }
 
-  if (status !== 'authenticated' || session?.user?.role !== 'admin') return null
+  if (status !== 'authenticated' || ['ceo', 'owner'].includes(session.user.role)) return null
 
   return (
     <div className='max-w-4xl mx-auto py-8 px-4'>

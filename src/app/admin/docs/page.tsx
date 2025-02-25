@@ -49,7 +49,7 @@ export default function AdminDocsPage() {
     )
   }
 
-  if (status !== 'authenticated' || session?.user?.role !== 'admin') return null
+  if (status !== 'authenticated' || !['owner', 'ceo'].includes(session?.user?.role)) return null
 
   return (
     <div className='max-w-4xl mx-auto py-8 px-4'>

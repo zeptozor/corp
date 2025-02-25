@@ -29,12 +29,22 @@ export default function EditPositionPage() {
   const { register, handleSubmit, reset, setValue } = useForm<PositionForm>()
 
   useEffect(() => {
-    if (status === 'authenticated' && session?.user?.role !== 'admin') {
+    if (status === 'authenticated' && !['owner', 'ceo'].includes(session?.user?.role)) {
       router.push('/')
     }
     fetchPosition()
     fetchRegulations()
   }, [session, router, status])
+
+  if (status === 'loading') {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500' />
+      </div>
+    )
+  }
+
+  if (status !== 'authenticated' || !['owner', 'ceo'].includes(session?.user?.role)) return null
 
   const fetchRegulations = async () => {
     try {
@@ -88,7 +98,7 @@ export default function EditPositionPage() {
     }
   }
 
-  if (status === 'loading') {
+  if (isLoading) {
     return (
       <div className='flex justify-center items-center min-h-screen'>
         <div className='animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500' />
@@ -96,7 +106,7 @@ export default function EditPositionPage() {
     )
   }
 
-  if (status !== 'authenticated' || session?.user?.role !== 'admin') return null
+  if (status !== 'authenticated' || ['admin', 'ceo'].includes(session.user.role)) return null
 
   return (
     <div className='max-w-4xl mx-auto py-8 px-4'>

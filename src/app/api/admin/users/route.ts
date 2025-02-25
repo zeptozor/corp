@@ -1,15 +1,15 @@
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { hash } from 'bcryptjs'
 import { writeFile } from 'fs/promises'
 import { join } from 'path'
+import { authOptions } from '@/lib/utils'
 
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session?.user || session.user.role !== 'admin') {
+    if (!session?.user || ['ceo', 'owner'].includes(session.user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

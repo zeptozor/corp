@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
-export async function GET(request: Request, { params }: { params: { year: string; month: string } }) {
+export async function GET(request: Request, { params }: { params: any }) {
   try {
     const statistics = await prisma.monthlyStatistics.findFirst({
       where: {

@@ -19,7 +19,7 @@ export default function EditLinkPage() {
   const { register, handleSubmit, setValue } = useForm<LinkForm>()
 
   useEffect(() => {
-    if (status === 'authenticated' && session?.user?.role !== 'admin') {
+    if (status === 'authenticated' && ['ceo', 'owner'].includes(session.user.role)) {
       router.push('/')
     }
     fetchLink()
@@ -69,7 +69,7 @@ export default function EditLinkPage() {
     )
   }
 
-  if (status !== 'authenticated' || session?.user?.role !== 'admin') return null
+  if (status !== 'authenticated' || ['ceo', 'owner'].includes(session.user.role)) return null
 
   return (
     <div className='max-w-4xl mx-auto py-8 px-4'>

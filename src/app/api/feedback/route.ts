@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
+import { authOptions } from '@/lib/utils'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
 export async function GET(request: Request) {
   try {
@@ -13,17 +13,6 @@ export async function GET(request: Request) {
     const feedback = await prisma.feedback.findMany({
       where: {
         userId: (session.user as any).id,
-      },
-      include: {
-        answer: {
-          include: {
-            admin: {
-              select: {
-                name: true,
-              },
-            },
-          },
-        },
       },
       orderBy: {
         createdAt: 'desc',

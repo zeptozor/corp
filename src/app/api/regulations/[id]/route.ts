@@ -1,9 +1,9 @@
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
-import { authOptions } from '../../auth/[...nextauth]/route'
+import { authOptions } from '@/lib/utils'
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: any }) {
   try {
     const { id } = params // Remove 'await', directly destructure from params
     if (!id) {
@@ -32,10 +32,10 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: any }) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session?.user || session.user.role !== 'admin') {
+    if (!session?.user || ['ceo', 'owner'].includes(session.user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -61,10 +61,10 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: any }) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session?.user || session.user.role !== 'admin') {
+    if (!session?.user || ['ceo', 'owner'].includes(session.user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
